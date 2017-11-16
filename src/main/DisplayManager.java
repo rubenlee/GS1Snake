@@ -18,10 +18,27 @@ public class DisplayManager extends JFrame {
         init();
     }
     public void init(){
-        logger.log(Level.FINE," Configuración Correcta"); //ejemplo a borrar
+        logger.log(Level.FINE," Configurando Pantalla"); //ejemplo a borrar
         setPreferredSize(new Dimension(600,600));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         add(canvas);
+        Frame frame = this;
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                logger.log(Level.INFO," Global Pause");
+                StateManager.getInstance().isPaused=true;
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Are you sure to close this window?", "Really Closing?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    Application.isRunning=false;
+
+                }else{
+                    StateManager.getInstance().isPaused=false;
+                }
+            }
+        });
         pack();
         setVisible(true);
     }
@@ -35,4 +52,5 @@ public class DisplayManager extends JFrame {
         }
         return instance;
     }
+
 }

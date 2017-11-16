@@ -11,11 +11,6 @@ public class MenuState extends State {
     }
     @Override
     public void update() {
-        try {
-            sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         StateManager.getInstance().setState(StateManager.ORIGINALGAME);
     }
     @Override

@@ -17,6 +17,7 @@ public class StateManager {
     private int currentState;
     private List<State> states= new ArrayList<State>();
     Logger logger;
+    public boolean isPaused;
 
     /* Añadir nuevos Estados aqui */
     protected StateManager(){
@@ -33,7 +34,9 @@ public class StateManager {
         currentState = MENU;
     }
     public void update(){
-        states.get(currentState).update();
+        if(!isPaused) {
+            states.get(currentState).update();
+        }
     }
     public void render(Graphics g){
         states.get(currentState).render(g);

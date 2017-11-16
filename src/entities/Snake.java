@@ -31,7 +31,6 @@ public class Snake extends Entity {
 
     @Override
     public void update() {
-        logger.log(Level.INFO," NOT Pressed "+input.isPressed("DOWN"));
         if(x>=100){
             turn = true;
         }

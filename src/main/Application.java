@@ -7,31 +7,31 @@ import java.util.logging.Logger;
 
 public class Application implements Runnable {
     private Thread thread;
-    private Boolean isRunning;
+    public static Boolean isRunning;
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
 
     public Application(){
+        //Iniciamos las clases Manager
         logger = Logger.getLogger(getClass().getName());
         stateManager = StateManager.getInstance();
         canvas = DisplayManager.getInstance().getCanvas();
         canvas.addKeyListener(InputManager.getInstance());
-        Logger.getGlobal().log(Level.INFO," Aplication Running");//ejemplo a borrar de uso global del logger
+
     }
     public void run() {
         logger.log(Level.INFO," Aplication Running");
         long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0;
+        final double amountOfTicks = 60.0; //Numero de updates por segundo
         double ns = 100000000 / amountOfTicks;
-
         double delta = 0;
         int updates = 0;
         int frames =0;
         long timer =System.currentTimeMillis();
         while(isRunning){
             long now = System.nanoTime();
-            delta += (double)(now-lastTime) / (long)ns;
+            delta += (double)(now-lastTime) / (long)ns; //diferencia de tiempo en cada loop
             lastTime=now;
 
             if(delta>=1){
@@ -48,7 +48,7 @@ public class Application implements Runnable {
                 frames=0;
             }
         }
-        stop();
+        logger.log(Level.INFO," Stopping");
     }
 
     private void start(){
@@ -67,8 +67,7 @@ public class Application implements Runnable {
     }
 
     private void render(){
-
-
+        //Iniciamos los buffer de dibujo
         BufferStrategy bs = canvas.getBufferStrategy();
         if(bs==null){
             canvas.createBufferStrategy(2);
@@ -76,16 +75,20 @@ public class Application implements Runnable {
             logger.log(Level.WARNING," No existe BufferStrategy");
         }
         Graphics g = bs.getDrawGraphics();
-        g.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-        stateManager.render(g);
-        bs.show();
-        g.dispose();
+        g.clearRect(0,0,canvas.getWidth(),canvas.getHeight());  //Limpiamos el canvas
+
+        stateManager.render(g); //Renderizamos el estado actual
+
+        bs.show();        //Mostramos el buffer en pantalla
+
+        g.dispose();        //Nos cargamos el componente gráfico
     }
 
     public static void main (String [ ] args) {
+        Logger.getGlobal().log(Level.INFO," Aplication Starting");//Ejemplo a borrar de uso global del logger
         Application app = new Application();
         app.start();
-
+        app.stop();
     }
 
 }
