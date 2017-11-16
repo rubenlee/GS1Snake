@@ -1,15 +1,26 @@
+package main;
+
+import states.MenuState;
+import states.OriginalGameState;
+import states.State;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StateManager {
     public static final int MENU = 0;
+    public static final int ORIGINALGAME = 1;
     private static StateManager instance = null;
     private int currentState;
     private List<State> states= new ArrayList<State>();
+    Logger logger;
 
     /* Añadir nuevos Estados aqui */
     protected StateManager(){
+        logger = Logger.getLogger(getClass().getName());
         states.add(new MenuState());
         states.add(new OriginalGameState());
         init();
@@ -28,7 +39,11 @@ public class StateManager {
         states.get(currentState).render(g);
     }
     public void setState(int state){
-        currentState=state;
+        if(states.size()>state) {
+            currentState = state;
+        }else{
+            logger.log(Level.SEVERE,"No se ha encontrado ningún estado con la id ("+state+")");
+        }
     }
     public static StateManager getInstance() {
         if(instance == null) {

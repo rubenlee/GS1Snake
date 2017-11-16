@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -9,18 +11,21 @@ public class DisplayManager extends JFrame {
     private Canvas canvas;
     private BufferStrategy bs;
     private Logger logger;
-    public int WIDTH = 600;
-    public int HEIGHT= 600;
     protected DisplayManager(){
+        super();
         logger = Logger.getLogger(getClass().getName());
         canvas = new Canvas();
-        setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        init();
+    }
+    public void init(){
+        logger.log(Level.FINE," Configuración Correcta"); //ejemplo a borrar
+        setPreferredSize(new Dimension(600,600));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(canvas);
         pack();
         setVisible(true);
-        logger.log(Level.FINE," Configuración Correcta"); //ejemplo a borrar
     }
+
     public Canvas getCanvas(){
         return canvas;
     }
