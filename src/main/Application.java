@@ -11,9 +11,12 @@ public class Application implements Runnable {
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
+
     public Application(){
+        logger = Logger.getLogger(getClass().getName());
         stateManager = StateManager.getInstance();
         canvas = DisplayManager.getInstance().getCanvas();
+        canvas.addKeyListener(InputManager.getInstance());
         Logger.getGlobal().log(Level.INFO," Aplication Running");//ejemplo a borrar de uso global del logger
     }
     public void run() {
@@ -40,7 +43,7 @@ public class Application implements Runnable {
             frames++;
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 100;
-                logger.log(Level.INFO,updates + " Ticks, Fps " + frames);
+                logger.log(Level.FINE,updates + " Ticks, Fps " + frames);
                 updates=0;
                 frames=0;
             }
@@ -49,7 +52,6 @@ public class Application implements Runnable {
     }
 
     private void start(){
-        logger = Logger.getLogger(getClass().getName());
         thread = new Thread(this);
         isRunning=true;
         thread.start();
