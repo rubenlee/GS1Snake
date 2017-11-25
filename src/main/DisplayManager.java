@@ -18,8 +18,9 @@ public class DisplayManager extends JFrame {
         init();
     }
     public void init(){
+
+        canvas.setPreferredSize(new Dimension(600,600));
         logger.log(Level.FINE," Configurando Pantalla"); //ejemplo a borrar
-        setPreferredSize(new Dimension(600,600));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         add(canvas);
         Frame frame = this;
@@ -39,6 +40,7 @@ public class DisplayManager extends JFrame {
                 }
             }
         });
+        setResizable(false);
         pack();
         setVisible(true);
     }

@@ -8,9 +8,13 @@ import java.util.logging.Logger;
 public class Application implements Runnable {
     private Thread thread;
     public static Boolean isRunning;
+    public final static double amountOfTicks = 60.0; //Numero de updates por segundo
+
     private Logger logger;
     private Canvas canvas;
     private StateManager stateManager;
+
+
 
     public Application(){
         //Iniciamos las clases Manager
@@ -23,7 +27,7 @@ public class Application implements Runnable {
     public void run() {
         logger.log(Level.INFO," Aplication Running");
         long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0; //Numero de updates por segundo
+
         double ns = 100000000 / amountOfTicks;
         double delta = 0;
         int updates = 0;
