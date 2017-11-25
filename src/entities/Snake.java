@@ -123,7 +123,9 @@ public class Snake extends Entity {
         init();
     }
 
-
+    public Point getHeadPosition(){
+        return new Point(queue.getFirst());
+    }
 
 
 

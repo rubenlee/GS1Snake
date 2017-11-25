@@ -1,6 +1,7 @@
 package states;
 
 import entities.Entity;
+import entities.Food;
 import entities.Snake;
 import main.DisplayManager;
 import main.InputManager;
@@ -12,9 +13,11 @@ import java.util.logging.Logger;
 
 public class OriginalGameState extends State {
 
-    private final double cellWidth;
+    private static double cellWidth = 0.0;
+    private Food food;
+    private Snake snake;
     private Logger logger;
-    private final int cellNumber = 20 ;
+    private static final int cellNumber = 20 ;
     Canvas canvas;
 
     public OriginalGameState(){
@@ -27,19 +30,22 @@ public class OriginalGameState extends State {
         }
 
         logger = Logger.getLogger(getClass().getName());
-        addEntity(new Snake(0,0,(int)cellWidth));
+        snake = new Snake(0,0,(int)cellWidth);
+        addEntity(snake);
+        Point p = getRandomPosition();
+        food = new Food(p.x,p.y,(int)cellWidth);
+        addEntity(food);
     }
 
     @Override
     public void init() {
+        canvas.setBackground(new Color(225,225,225));
         logger.log(Level.INFO," Iniciando Mappeo");
         InputManager input = InputManager.getInstance();
         input.addMapping("UP", KeyEvent.VK_UP);
         input.addMapping("DOWN", KeyEvent.VK_DOWN);
         input.addMapping("RIGHT", KeyEvent.VK_RIGHT);
         input.addMapping("LEFT", KeyEvent.VK_LEFT);
-
-
         super.init();
     }
     @Override
@@ -47,6 +53,12 @@ public class OriginalGameState extends State {
         drawGrid(g);
         super.render(g);
 
+    }
+
+    @Override
+    public void update(){
+        checkCollision();
+        super.update();
     }
 
     private void drawGrid(Graphics g) {
@@ -63,4 +75,18 @@ public class OriginalGameState extends State {
         + "getwidth:" + canvas.getWidth() + "getheight:" + canvas.getHeight());
 
     }
+
+    public static Point getRandomPosition(){
+        int xaux = ((int) (Math.random() * cellNumber));
+        int yaux = ((int) (Math.random() * cellNumber));
+        return new Point(xaux*(int)cellWidth,yaux*(int)cellWidth);
+    }
+
+    public void checkCollision(){
+        if(snake.getHeadPosition().x == food.x && snake.getHeadPosition().y == food.y){
+            snake.setGrow(true);
+            food.setHasCollide(true);
+        }
+    }
+
 }
